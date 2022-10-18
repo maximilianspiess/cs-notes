@@ -1,0 +1,50 @@
+Little endian
+
+Write in little endian
+    00 00 0 100H = 1 00 00H
+    AF 01 00 00H = 1 AFH
+    00 01 00 00H = 1 00H
+    10 10 00 00H = 10 10H
+    00 FF 01 00H = 1 FF 00H
+
+Write memory value in 32bit little endian HEX
+    a) 35 = 23H ->  23 00 00 00H
+    b) 390 = 186H -> 86 01 00 00H
+    c) 450 = 1C2H -> C2 01 00 00H
+    d) 1003 = 3EBH -> EB 03 00 00H
+
+Two's complement and represent in two byte in HEX
+    a) -100 -(positive)> 0110 0100B -> (negate) 1001 1011B -> (add +1)
+
+        1111 1111 1001 1011B (2 byets)
+        +                  1
+        --------------------
+        1111 1111 1001 1100B
+
+        -> FF 0CH (16 bit)
+
+    b) 67 -> 0100 0011B -(no +1 since positive)> 0000 0000 0100 0011B CHECK
+        -> 00 43H
+
+    c) -10 -> 1010 -(negate)> 1111 1111 1111 0101B -(+1)> 1111 1111 1111 0110B
+        -> FF F6H
+
+    d) -5 -> 0101 -(negate)> 1111 1111 1111 1010B -(+1)> 1111 1111 1111 1011B
+        -> FF FBH
+
+    e) -67 -> 0100 0011B -(negate)> 1111 1111 1011 1100B -(+1)> 1111 1111 1111 1011 1101B
+        -> FF BDH
+
+    f) -130 -> 1000 0010B -(negate)> 1111 1111 0111 1101B -(+1)> 1111 1111 0111 1110B
+        -> FF 7EH
+    
+    Additions in HEX
+        a) 100 + (-67) -> 009C + FFBD = (1) 0059H (the 1 is overflow, so ignored)
+        b) 67 + (-5) ->  0043 + FFFB = 003EH
+        c) (-67) + (-5) -> FFBD + FFFB = 1FFB8
+
+    Write nums in HEX with bias 127
+        a) 120 -(add bias)> 247 -(turn to bin)> 1111 0111B -(turn to HEX)> F7H
+        b) -20 -> 107 -> 0110 1011B -> 6BH
+        c) -15 -> 112 -> 0111 0000B -> 70H
+
