@@ -95,8 +95,6 @@ Return value:
 
 - if a system call returns a value, it can be found in `rax`.
 
-
-
 ### File descriptors
 
 Standard Input: stdin, 0
