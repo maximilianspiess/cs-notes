@@ -300,3 +300,39 @@ You can make all of this easier by calling *something I didn't get to write down
 ### Conditional Compiling
 
 Seems like we won't be using any of this in a long while, hence I'm not sure I will continue taking notes...
+
+## Conclusion
+
+### Data Types
+
+- Each var has a type, values in memory
+- int: signed integers using 4 bytes (also unsigned)
+- long long: signed integer using 8 bytes (also unsigned)
+- float, double
+- char and char[] (i.e. strings)
+
+### Library
+
+- stdbool.h: to use bool and true/false
+- stdint.h: tyoes with defined bit-widths
+- stdio.h for input/output
+- stdlib.h: for standard functions (string manipulation, for example)
+- math.h: for mathematical functions
+
+Funnily enough, `.h`files don't contain the actual code, but just the function names!
+
+### Symbolic constant
+
+- very efficient: replaced by preprocessor
+- avoid writing constands in your code!
+
+## Makefile is necessary
+
+- Manual compilation is too complicated
+- Helps to change configuration easily
+
+## A lot of possibilities
+
+- Installation of written in Makefile
+- Configuration is tested
+- Compilation depends on machine and libraries
