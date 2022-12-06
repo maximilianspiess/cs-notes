@@ -1,0 +1,79 @@
+# Das Prüfen von Anforderungen
+
+## Was heisst das?
+
+Die Idee dahinter ist Abweichungen zwischen Anforderungen und Wünschen/Bedürfnisse zu erkenne. Es werden alle geprüft und für die Entwicklung freigebgeben. 
+
+**Ziel**: Fehler in den Anforderungen zu finden und zu lösen. 
+
+Wieso? Weil die Anforderungsdokumentation die **Basis für den Vertrag** bildet.
+
+## Abstimmung von Andorderungen
+
+Heisst: wiedersprechende Anforderungen generieren Konflikte, und diese gefährden das Systemplan. Sie müssen gelöst werden.
+
+**Ziel**: ein gemeinsames, übereinstimmendes Verständnis der Anforderungen zu kriegen. So können auch zusätzliche Kosten in Zukunft gespart werden.
+
+## Qualitätsaspekte
+
+1. Inhalt: wurde alles erfasst?
+2. Dokumentation: wurde alles korrekt dokumenteirt?
+3. Abgestimmtheit: sind alle mit der Anforderung einverstanden?
+
+## Prinzipien
+
+Prinzipien für das korrekte Prüfen
+
+1. Beteiligung aller Stakeholder
+2. Trennung von Fehlersuche und Fehlerkorrektur
+3. Prüfung aus unterschiedlichen Sichten
+4. Geeigneter Wechsel der Dokumentationsform
+5. Kontruktion von Entwicklungsartefakten (oder Testartefakte)
+6. Wiederholte Prüfung
+
+## Kriterien zur Prüfung der Anforderungen - INVEST
+
+- I: Independent: eine User Story sollte nicht von andere abhängen
+- N: Negotiable: solange das Produkt nicht sufgeliefert ist, kann man Änderungen vornehmen
+- V: Valuable: Umsetzung erhöht den Gebrauchswert des Produkts
+- E: Estimable: Aufwand muss abschätzbar sein
+- S: Small: Aufwand sollte überschaubar sein
+- T: Testable: erfolgreiche Umstzung sollte überprüfbar sein.
+
+## Techniken zur Prüfung der Anforderungen
+
+1. INVEST
+
+### 2. Walkthrough
+
+Ist eine "leichter" Review und weniger strikt als eine Inspektion.
+
+**Ziel**: gemeinsam Qualitätsmängel zu identifizieren und Anforderungen gleich verstehen.
+
+**Vorbereitung**: Anforderungen werden an Teilnehmer verteilt und auf Mängel unterscuht
+
+**Ablauf**: schrittweises Besprechen der Anforderungen
+
+**Rollen**: Reviewer, Autor, Protokollant, ev. Moderator.
+
+### 3. Sellungnahme (Vereinfachung Walkthrough)
+
+**Ziel**: Anforderungen an dritte Person übergeben und von diese Person eine Expertise bezüglich Qualität der Anforderungen zu erhalten
+
+**Ablauf**: Die dritte Person überprüft Anforderungen auf Qualitätsmängel anhand Qualitätskriterien. Diese werden dokumentiert.
+
+### 4. Inspektion (technisches Review)
+
+**Ziel**: Entwicklungsartefakte angand striktes Prozessschema nach Fehlern durchsucht.
+
+**Abluaf**: in Phasen, wie:
+
+- Planung: Ziel, zu inspizierende Ergebnisse, Art der Durchführung
+- Übersicht: Es wird alles erläutert und gemeinsam verstanden
+- Fehlersuche
+- Fehlersammlung: 
+- Fehlerkorrektur
+- Nachkontrolle
+- Refelxion
+
+Hochladen von Dokument
