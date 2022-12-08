@@ -1,6 +1,6 @@
 package data;
 
-public class LendingItem {
+public abstract class LendingItem {
     private final long id;
     private final String title;
     private State state; 
@@ -36,3 +36,4 @@ public class LendingItem {
 		return "ID: " + id + " Title: " + title;
 	}
 }
+

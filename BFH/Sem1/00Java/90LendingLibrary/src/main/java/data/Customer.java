@@ -1,7 +1,6 @@
 package data;
 
 public class Customer extends Person {
-
     private final String email;
 
     public Customer(String firstName, String lastName, String email) {
@@ -17,5 +16,4 @@ public class Customer extends Person {
     public String toString() {
     	return super.toString() + " " + email;
     }
-
 }

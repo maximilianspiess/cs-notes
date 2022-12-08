@@ -1,9 +1,6 @@
 package data;
 
-
 public enum State {
-AVAILABLE,
-LENT,
-DAMAGED,
-RESERVED
+	AVAILABLE, LENT, DAMAGED, RESERVED
 }
+

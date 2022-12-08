@@ -1,6 +1,7 @@
 package application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import application.LendingManager.LendingIterator;
 import data.Actor;
 import data.Author;
 import data.Book;
@@ -33,11 +35,11 @@ class LendingLibraryTest {
 		author = new Author("Franz", "Kafka");
 		book1 = new Book(123456789, "Die Verwandlung", author);
 		book2 = new Book(784655423, "XYZ", author);
-		movie1 = new Movie(5612345,"Sonne");
-		movie2 = new Movie(6712345,"Erde");
-		actor = new Actor("A","B");
+		movie1 = new Movie(5612345, "Sonne");
+		movie2 = new Movie(6712345, "Erde");
+		actor = new Actor("A", "B");
 		movie1.addActor(actor);
-		movie1.addActor(new Actor("C","D"));
+		movie1.addActor(new Actor("C", "D"));
 		customer1 = new Customer("Anton", "Muster", "anton.muster@bluewin.ch");
 		customer2 = new Customer("Peter", "Muster", "peter.muster@bluewin.ch");
 		lendingManager = new LendingManager();
@@ -46,12 +48,12 @@ class LendingLibraryTest {
 
 	@Test
 	void testItemState() {
-		// check for  correct item state
+		// check for correct item state
 		assertEquals(book1.getState(), State.AVAILABLE);
 		assertEquals(movie1.getState(), State.AVAILABLE);
-		
+
 		assertEquals(book2.getState(), State.LENT);
-		
+
 		// check if a book can be lent if not available or can be lent twice
 		book1.setState(State.RESERVED);
 		assertNull(lendingManager.lendItem(customer1, book1));
@@ -59,7 +61,7 @@ class LendingLibraryTest {
 		movie2.setState(State.DAMAGED);
 		assertNull(lendingManager.lendItem(customer1, movie2));
 	}
-	
+
 	@Test
 	void testLendItem() {
 		Lending lending = lendingManager.lendItem(customer1, book1);
@@ -82,10 +84,8 @@ class LendingLibraryTest {
 
 	@Test
 	void testMovieActors() {
-		assertEquals(2,movie1.getActors().size());
+		assertEquals(2, movie1.getActors().size());
 	}
-	
-
 
 	@Test
 	void testReturnItem() {
@@ -105,22 +105,22 @@ class LendingLibraryTest {
 		assertNotNull(lendingManager.findLending(movie1).getReturnDate());
 		assertEquals(movie1.getState(), State.AVAILABLE);
 	}
-	
+
 	@Test
 	void testGetNbOfBooklendings() {
 		int number = lendingManager.getNbOfLendings();
 		lendingManager.lendItem(customer1, book1);
 		assertEquals(number + 1, lendingManager.getNbOfLendings());
 	}
-	
+
 	@Test
 	void testGetNbOfMovieLendings() {
-		 int number = lendingManager.getNbOfLendings();
-		 lendingManager.lendItem(customer1, movie1);
-		 lendingManager.lendItem(customer2, movie2);
-		 assertEquals(number + 2, lendingManager.getNbOfLendings());
+		int number = lendingManager.getNbOfLendings();
+		lendingManager.lendItem(customer1, movie1);
+		lendingManager.lendItem(customer2, movie2);
+		assertEquals(number + 2, lendingManager.getNbOfLendings());
 	}
-	
+
 	@Test
 	void testIsInstanceOf() {
 		assertTrue(book1 instanceof LendingItem);
@@ -129,5 +129,15 @@ class LendingLibraryTest {
 		assertTrue(author instanceof Person);
 		assertTrue(actor instanceof Person);
 	}
-	
+
+	@Test
+	void testLendingIterator() {
+		LendingIterator lendingIterator = lendingManager.getLendingIterator();
+		assertTrue(lendingIterator instanceof LendingIterator);
+		assertTrue(lendingIterator.hasNextLending());
+		assertEquals(customer1, lendingIterator.nextLending().getCustomer());
+
+		assertFalse(lendingIterator.hasNextLending());
+		assertNull(lendingIterator.nextLending());
+	}
 }

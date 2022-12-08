@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Movie extends LendingItem {
-
 	private List<Actor> actors;
 
 	public Movie(int id, String title) {
@@ -12,7 +11,6 @@ public class Movie extends LendingItem {
 		this.actors = new ArrayList<>();
 	}
 
-	// overload
 	public Movie(int id, String title, List<Actor> actors) {
 		this(id, title);
 		this.actors = actors;
@@ -33,5 +31,4 @@ public class Movie extends LendingItem {
 		}
 		return super.toString() + ", Actors: " + actorString;
 	}
-
 }

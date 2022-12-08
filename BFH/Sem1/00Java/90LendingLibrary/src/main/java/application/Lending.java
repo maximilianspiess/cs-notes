@@ -10,11 +10,11 @@ public class Lending {
 	private LocalDate endDate;
 	private final LendingItem item;
 	private final Customer customer;
-		
-	public Lending(Customer customer, LendingItem item){
-	    this.startDate = LocalDate.now();
-	    this.customer = customer;
-	    this.item = item;
+
+	public Lending(Customer customer, LendingItem item) {
+		this.startDate = LocalDate.now();
+		this.customer = customer;
+		this.item = item;
 	}
 
 	public LocalDate getStartDate() {
@@ -28,12 +28,19 @@ public class Lending {
 	public Customer getCustomer() {
 		return customer;
 	}
-	
+
 	public LocalDate getReturnDate() {
 		return this.endDate;
 	}
-	
+
 	public void setReturnDate(LocalDate date) {
 		this.endDate = date;
 	}
+
+	@Override
+	public String toString() {
+		return item.toString() + "\n" + customer.toString() + "\n " + "Start Date: " + startDate.toString()
+				+ "\nEnd Date: " + endDate.toString();
+	}
 }
+

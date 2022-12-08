@@ -24,7 +24,6 @@ public class DataProvider {
 	}
 
 	public void initData() {
-
 		// add some books and movies
 		Author a1 = new Author("Franz", "Kafka");
 		Author a2 = new Author("Thomas", "Mann");
@@ -67,5 +66,4 @@ public class DataProvider {
 	public ArrayList<Customer> getCustomers() {
 		return customers;
 	}
-
 }
