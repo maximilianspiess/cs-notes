@@ -336,3 +336,56 @@ Funnily enough, `.h`files don't contain the actual code, but just the function n
 - Installation of written in Makefile
 - Configuration is tested
 - Compilation depends on machine and libraries
+
+---------------------- A LOT TO FILL RIGHT HERE ----------------------------
+
+## Arrays
+
+### Definition
+
+To define one, we give its type and the number of elements.
+**If less than the defined amount of elements are entered, they are initialized to whatever it was before, except if it is a global array, which is then filled with 0s.**
+
+### Accessing
+
+The can be accessed with the `[]` operator. You have to know how big the arrays is though!
+
+### Multidimensional
+
+Initialized like so: `int8_t a[3][4] = {{0, 0, 0}, {1, 1, 1}, {2, 2, 2}, {3, 3, 3}}`
+
+### As func parameter
+
+You can use arrays as function parameters like: `void func(char param[])`
+
+### As return type
+
+Should only be returned to static variables!
+Return with a pointer (`int *p = random_numbers()`)
+
+### What if we want variable length?
+
+The size is normally defined at compile time, but C99 introduced *variable length arrays*. This only works for automatic arrays and the arrays size is **still fixed after definition**. You have to be aware of size and lifetime, since it is **on the stack**.
+
+Example:
+
+```c
+uint8_t lem = 0;
+if (1 == scanf("%hhu", &len)){
+        char array[len];
+        printf("len: %d" SOMETHING MISSING  HERE)
+}
+```
+
+## Bitwise operation
+
+You can operate con individual bits. It's just like in assembly (uh yay...):
+
+- ~ : not
+- & : and
+- | : or
+- ^ : xor
+
+### Bit shift
+
+Shift the bits left or right with `x << n` (shift x by n bits to the left) and `x >> n` (shift x by n bits to the right).

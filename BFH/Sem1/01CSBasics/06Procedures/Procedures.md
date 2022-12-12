@@ -69,7 +69,7 @@ Types of jump:
 
 ## Libraries
 
-Isues with big, monolothic programs:
+Issues with big, monolithic programs:
 
 - hard to maintain
 - error prone
