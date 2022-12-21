@@ -389,3 +389,236 @@ You can operate con individual bits. It's just like in assembly (uh yay...):
 ### Bit shift
 
 Shift the bits left or right with `x << n` (shift x by n bits to the left) and `x >> n` (shift x by n bits to the right).
+
+## Structures, Unions and Bit-Fields
+
+## Structures
+
+It's a record of information, made of multiple fields or members. These fields can be of any type, even pointers and other structures! It cannot contain itself though. But pointing to itself is possible!
+
+Syntax
+
+```c
+struct account {
+        uint64_t number;
+        enum {CHECKING, SAVINGS} type;
+        char *pName;
+        uint32_t balance;
+}
+```
+
+### Defining structures
+
+`struct color {uint8_t red; uint8_t green; uint8_t blue};`
+`struct color color1`;
+
+Or anonymous struct:
+
+`struct {uint8_t red; uint8_t green; uint8_t blue} color5, color6;`
+
+### Structure initialization
+
+They are initialized like variables, depending on storage class (auto, static, global). Members can be initialized with a list (like arrays). If there aren't enough initial values, the rest will be filled with 0.
+
+### Nested structures
+
+You can have structs in structs:
+
+```c
+struct date {
+        uint32_t year;
+        uint8_t month;
+        uint8_t day;
+};
+```
+
+This is even possible with anonymous structs:
+
+```c
+struct {
+        struct {
+                int i;
+                int j;
+        } a, b;
+} a_struct;
+
+a_struct.a.i = 23;
+a_struct.b.j = 42;
+```
+
+### Arrays of structures
+
+Have an array of structs:
+
+```c
+struct date dates[] = {
+        {1960, 10, 24},
+        {1940, 1, 30},
+        {2020, 12, 13}
+};
+```
+
+### Structures and pointers
+
+Structs tend to be large. That's why they also have pointers. Members of the struct can then be accesses by dereferencing. We use the *arrow operator* (`->`) as a shortcut.
+
+```c
+struct color amgenta = {0};
+struct color *pMagenta = &magenta;
+
+(*pMagenta).red = 0xff;
+pMagenta-> blue = 0xff;
+```
+
+### Dynamic allocation of structures
+
+As with any type, you can allocate structs dynamically:
+
+```c
+struct person *pHans_Muster = calloc(1, sizeof(struct person));
+```
+
+## Unions *(for hackers)*
+
+### Introduction
+
+A union is also a record type with multiple members. All members share **the same location** in memory. So only ONE member can contain a value at any time. Hence, the memory required is equal to the **largest** member.
+
+Example:
+
+```c
+union number_val {
+        uint16_t i;
+        double f;
+};
+
+// sizeof(union number_val) == sizeof(double) (8)
+
+union number_val num = {.f = 1.23};
+printf("%2lf\n", num.f); //1.23
+```
+
+So here, the size is 8, because the double is bigger than the uint16_t.
+
+## Advanced types
+
+Using enum, union and struct, we can create advanced types. For example, this combined IPv4/IPv6 address type:
+
+```c
+struct internet_address {
+        enum {IPv4, IPv6} address_family;
+        union {
+                struct {
+                        uint32_t value;
+                } ipv4;
+                struct {
+                        uint32_t value[4];
+                } ipv6;
+        } address;
+};
+
+// sizeof(struct internet_address == 20)
+```
+
+## Bit-Fields
+
+Members of structs and unions can also be *bit-fields*. This is an integer of specified bit-width. You can then manipulate individual bits by name. You normally allocate these in words.
+
+Syntax: `type [member_name] : width;`.
+
+Example:
+
+```c
+struct date {
+        unsigned int day : 5; // 0 to 32
+        unsigned int month : 4 // 0 to 12
+        signed int year : 23 //-4194304 to +4194304
+};
+
+//sizeof(struct date) = 4
+```
+
+## Files and Directories
+
+### F&D Introduction
+
+In C, files are accesses with streams, using `FILE *`pointers (stdio.h). Streams offer byte-/character-, line- and block-wise access. Every stream has a position indicator.
+
+### Opening and CLosing Files
+
+To open a file: `FILE ¨fopen(char *filename, char* mode);`. The mode specifies how we access it:
+
+- read (r)
+- write (w)
+- append (a)
+- appending a "+" enables read and write, write and read or read and append
+
+Closing a file: `int fclose(FILE *fp);`. This return 0 on success, `EOF`on error.
+
+You should close files after use. Closing them *flushes* any data that may be cached. We have to close, because you can only open so many files.
+
+### `perror()`
+
+A `NULL` pointer doesn't tell anything about the error. Here, the variable `errno` from (`errno.h`) provides **error codes** when calling system and library functions.
+
+The function `perror(const char*)` prints the error message and any possible description.
+
+### Reading and Writing
+
+Some functions:
+
+individual characters/bytes:
+
+- fgetc(), (getc()), getchar()
+- fputc(), (putc()), putchar()
+
+Lines:
+
+- fgets()
+- fputs(), puts()
+
+formatted I/O:
+
+- fprintf(), printf()
+- fscanf(), scanf()
+
+Blockwise:
+
+- fread()
+- fwrite()
+
+Other useful funcs:
+
+- fflush(): to flush the buffer of a file
+- setbuf() and setvbuf() to vonfig buffering behavior
+- ftell() and fgetpos() return the current pos in the file
+- fseek() and fsetpos() can set this position
+- ftmpfile() creates a temporary file and opens it in `w+b`. It is deleted automatically when closed or when the program exits.
+
+### Directories and Metadata
+
+Apart from I/O, there are other funcs that operate on files:
+
+- accessing file metadata: fstat(), lstat()
+- permission and ownership: chmod(), chown()
+
+Also, to do with directories:
+
+- mkdir(), rmdir()
+- opendir(), readdir(), closedir()
+- getcwd()
+
+
+## The `const` qualifier
+
+`const` is a compile time check. It means, that the variable shall not be modified after definition. 
+
+`const`objects *might* be modified at runtime, but you get a warning.
+
+**Read only data** section (`.rodata`): a data section, similar to `.data` and `.bss`. Writing to it leads to segmentation fault. Globals and statics are normally put into `.rodata`.
+
+`const` can also be passed as function parameter. This means, that the functions shouldn't change the value of something passed, be it a reference or object.
+
+## Spital rule
+
+INSERT SPIRAL RULE JPG (CSBSpiralRulec.jpg)
