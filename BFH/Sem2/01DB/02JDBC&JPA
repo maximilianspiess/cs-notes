@@ -1,0 +1,166 @@
+# JDBC & JPA
+
+## JDBC
+
+It's a Java API for communicating with SQL. It supports querying and updating data
+
+### Connecting to JDBC
+
+![JDBC Connection setup](../res/db02.png)
+
+### Querying in JDBC
+
+![Querying](../res/db03.png)
+
+### Processing results
+
+![Processing results](../res/db04.png)
+
+And checking for null values? Because values can be *null*, and this would be wrongly converted by `Float` to 0.0 instead of leaving it as *null*!
+
+```java
+if (rset.wasNull()){
+    System.out.println("The salary was NULL")
+}
+```
+
+### Constructing queries
+
+We could be tempted to do the following:
+
+```java
+ResultSet rset = stmt.executeQuery(
+    "select name from instructor" +
+    "where dept_name='" + deptName + "'"
+);
+```
+
+The problem with this, is that an attacker could write **anything** into the `deptName` variable, hence doing an SQL injection. To avoid this, we use **prepared statements**.
+
+### Prepared statements
+
+```java
+PreparedStatement pStmt = 
+    conn.prepareStatement(
+        "insert into instructor" +
+        "values(?,?,?,?)"
+    )
+
+pStmt.setString(1, "8887")
+pStmt.setString(2, "Perry")
+pStmt.setString(3, "Platypus")
+pStmt.setString(4, 123000)
+pStmt.executeUpdate()
+```
+
+### Transactions
+
+In case something goes wrong, we do queries in transactions. They help to avoid mistakes making the database unusable or lose its integrity. It would be like this:
+
+```java
+// do something in the database
+conn.commit(); // if it went well
+// or
+conn.rollback(); // if it didn't
+```
+
+## ORM - Object Relational Mapping
+
+### Why use it?
+
+Imagine you're using JDBC. Using it a lot can lead to a lot of repeated code. In order to clean this up, we use ORM. It helps to:
+
+- specify mapping between classes and tables
+- give methods to sync between objects in memory and tuples in a database according to the mapping
+
+### OR Mapping
+
+We specify a mapping of classes to tables:
+
+- Class <--> Table
+- Field <--> Column
+- Object <--> Row
+
+ORM design work both ways:
+
+- Objects-first: map existing classes to tables
+- Data-first: map existing tables to classes
+
+### The Object-Relational Mismatch
+
+![Mismatch between Object and Relation](../res/db05.png)
+
+And how it gets solved:
+
+![Bridging the problem](../res/db06.png)
+
+### JPA - Java Persistence API
+
+It's an API for ORM. It's just a specification with several implementations of:
+
+- Hibernate,
+- OpenJPA,
+- EclipseLink
+
+JPA is merely a layer on top of the JDBC. It uses annotations on classes to specify how to map a class to a table. It also provides an EntityManager to find/store/delete objects in a database.
+
+### Entities
+
+Attributes are mapped to a column of the same name.
+
+```java
+@Entity class Person {
+    @Id private int id;
+    private String firstName;
+    //...
+}
+```
+
+```sql
+create table Person (
+    id int primary key,
+    firstName varchar(255),
+    --...
+)
+```
+
+### Restrictions
+
+Entity classes must:
+
+1. define a primary key
+2. have only have attributes of certain types
+3. have a public constructor with no arguments
+
+### EntityManager
+
+It provides the connection to the underlying database. In Java SE you have to explicity create it, in Java EE it's injected by the container
+
+Using entities:
+
+![Entity example](../res/db07.png)
+
+### Relationships - ToOne
+
+An entity can contain a reference to another entity. In this case, the cardinality has to be annotated with `ManyToOne` or `OneToOne`. These are loaded **eagerly** The ORM then chooses the appropriate database schema.
+
+### Relationships - ToMany
+
+An entity can contain a collection of references to other entities. In this case, it has to be annotated with `ManyToMany` or `OneToMany`. These are loaded **lazily**. Again, the ORM chooses the schema.
+
+### Bidirectional relationships
+
+In cases where we want to maintain references for the same relationship in both entities, like "A person should have a family and each family should have a list of its family members". Why won't this work?:
+
+![bidirectional rel problem](../res/db08.png)
+
+Because the `OneToMany` relationship creates a Family_Person table, but we already have a Family foreign key in Person! And that means that a person could belong to two families, which we don't want!
+
+To solve this we use `mappedBy`:
+
+![Solving bidirectional problem](../res/db09.png)
+
+`mappedBy` means "do not create a separate table, the relationship is already defined by another entity".
+
+### Inheritance
+
