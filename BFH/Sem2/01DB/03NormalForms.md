@@ -1,4 +1,4 @@
-o# Normal Forms
+# Normal Forms
 
 ## Wide Tables vs Narrow Tables
 
